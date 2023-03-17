@@ -1,0 +1,42 @@
+{
+  "name": "@samuel.miao/lwj",
+  "version": "1.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "lwj": "bin/lwj"
+  },
+  "files": [
+    "bin",
+    "src",
+    "index.js",
+    "config"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goldEli/lwj-cli.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "cli",
+    "lwj"
+  ],
+  "author": "miaoyu",
+  "license": "ISC",
+  "dependencies": {
+    "arg": "^5.0.0",
+    "chalk": "^4.1.1",
+    "esm": "^3.2.25",
+    "execa": "^5.0.0",
+    "inquirer": "^8.1.2",
+    "listr": "^0.14.3",
+    "ncp": "^2.0.0",
+    "ora": "^5.4.0",
+    "pkg-install": "^1.0.0"
+  }
+}
