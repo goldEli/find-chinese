@@ -17,14 +17,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/goldEli/lwj-cli.git"
+    "url": "git+https://github.com/goldEli/find-chinese.git"
   },
   "publishConfig": {
     "access": "public"
   },
   "keywords": [
     "cli",
-    "lwj"
+    "find",
+    "chinese"
   ],
   "author": "miaoyu",
   "license": "ISC",
