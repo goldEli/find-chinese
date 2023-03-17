@@ -13,7 +13,7 @@ function parseArgumentsIntoOptions(rawArgs) {
     }
   );
   return {
-    ignore: args["--i"],
+    ignoreDirs: args["--i"],
     help: args["-h"],
     suffix: args["--suffix"],
     // command: args._[0],
@@ -32,11 +32,11 @@ export async function run(args) {
     console.log();
     // console.log("Commands:");
     // console.log("\tcreate\t创建渐进式taro项目");
-    console.log("\t\t --i 忽略的文件夹, 默认过滤 node_modules 文件夹");
+    console.log("\t\t --i 忽略的文件夹, 默认过滤 node_modules 文件夹 中竖向 'dir|src'");
     console.log();
     // console.log("\twatch\t文件监听");
     // console.log("\tconfigWX\t创建/修改 微信开发配置");
     return;
   }
-  findChinese();
+  findChinese(options);
 }
