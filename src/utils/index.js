@@ -57,7 +57,9 @@ export async function getAllFilesByDir(options, callback) {
 }
 
 export async function checkCodeHasChinese(code, fileName) {
+  // console.log(code);
   const ast = codeToAst(code);
+  // console.log(ast);
   await handleAst(ast);
   console.log(`以下文件包含中文：${fileName}`);
 }
@@ -94,6 +96,11 @@ function handleAst(ast) {
           node.value.cooked &&
           isChinese(node.value.cooked)
         ) {
+          resolve(true);
+        }
+      },
+      JSXText({ node }) {
+        if (node && isChinese(node.value)) {
           resolve(true);
         }
       },
@@ -135,10 +142,13 @@ function codeToAst(code) {
   const ast = parser.parse(code, {
     sourceType: "module", // 识别ES Module
     plugins: [
-      "jsx", // enable jsx
       //   "vue",
       "typescript",
+      "jsx", // enable jsx
       "classProperties",
+      "dynamicImport",
+      "optionalChaining",
+      "decorators-legacy",
     ],
   });
   return ast;
