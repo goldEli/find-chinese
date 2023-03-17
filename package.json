@@ -1,5 +1,5 @@
 {
-  "name": "@samuel.miao/checkChinese",
+  "name": "@samuel.miao/checkcn",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "findChinese": "bin/findChinese"
+    "checkcn": "bin/findChinese"
   },
   "files": [
     "bin",
