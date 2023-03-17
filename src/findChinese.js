@@ -1,1 +1,6 @@
-console.log("hello");
+
+const findChinese = (options) => {
+    console.log('findChinese')
+};
+
+export default findChinese;
