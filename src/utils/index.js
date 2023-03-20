@@ -60,7 +60,7 @@ export async function getAllFilesByDir(options, callback) {
 }
 
 export async function checkCodeHasChinese(code, fileName) {
-  // log.normal(`正在检测：${fileName}`);
+  log.normal(`正在检测：${fileName}`);
   // console.log(code);
   // console.log(code);
   const ast = codeToAst(code);
@@ -101,11 +101,12 @@ function handleAst(ast) {
           node.value.cooked &&
           isChinese(node.value.cooked)
         ) {
-          const ast = codeToAst(node.value.cooked);
-          // 过滤 jsx 中出现的注释
-          if (ast.comments.length > 0) {
-            return;
-          }
+          console.log(node);
+          // const ast = codeToAst(node.value.cooked);
+          // // 过滤 jsx 中出现的注释
+          // if (ast.comments.length > 0) {
+          //   return;
+          // }
           resolve(true);
         }
       },
