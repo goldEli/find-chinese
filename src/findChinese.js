@@ -16,7 +16,7 @@ const findChinese = (options) => {
     {
       dirPath: rootDir,
       fileExtension: [".js", ".vue", ".ts", ".tsx", ".jsx"],
-      ignoreDirs: ["node_modules"].concat(ignoreDirs.split('|')),
+      ignoreDirs: ["node_modules", "webpack.config.js"].concat(ignoreDirs.split('|')),
     },
     async (filePath) => {
       const code = await readFile(filePath);

@@ -15,6 +15,9 @@ export const log = {
   suc: (msg) => {
     console.log("%s", chalk.green(msg));
   },
+  normal: (msg) => {
+    console.log("%s", chalk.gray(msg));
+  },
 };
 
 export const createLoading = (msg) => {
@@ -37,7 +40,7 @@ export async function getAllFilesByDir(options, callback) {
       }
       const isFile = stats.isFile();
       const isDir = stats.isDirectory();
-      if (isFile) {
+      if (isFile && !ignoreDirs.includes(fileName)) {
         if (fileExtension.some((item) => filePath.endsWith(item))) {
           callback(filePath);
         }
@@ -57,11 +60,13 @@ export async function getAllFilesByDir(options, callback) {
 }
 
 export async function checkCodeHasChinese(code, fileName) {
+  // log.normal(`正在检测：${fileName}`);
+  // console.log(code);
   // console.log(code);
   const ast = codeToAst(code);
   // console.log(ast);
   await handleAst(ast);
-  console.log(`以下文件包含中文：${fileName}`);
+  log.suc(`👉️ 文件包含中文：${fileName}`);
 }
 
 export function readFile(path) {
@@ -96,6 +101,11 @@ function handleAst(ast) {
           node.value.cooked &&
           isChinese(node.value.cooked)
         ) {
+          const ast = codeToAst(node.value.cooked);
+          // 过滤 jsx 中出现的注释
+          if (ast.comments.length > 0) {
+            return;
+          }
           resolve(true);
         }
       },
@@ -141,9 +151,21 @@ function isChinese(str) {
 function codeToAst(code) {
   const ast = parser.parse(code, {
     sourceType: "module", // 识别ES Module
+    // sourceType: "script",
+    // other babel config
+    presets: [],
     plugins: [
       //   "vue",
-      "typescript",
+      // ref: https://github.com/babel/babel/issues/14871
+      ["typescript"],
+      // "jsx", // enable jsx
+      // "classProperties",
+      // "dynamicImport",
+      // "optionalChaining",
+      // "decorators-legacy",
+      // "asyncDoExpressions ",
+      // "asyncGenerators",
+
       "jsx", // enable jsx
       "classProperties",
       "dynamicImport",
