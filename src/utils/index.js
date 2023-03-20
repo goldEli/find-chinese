@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 const parser = require("@babel/parser");
 const traverse = require("@babel/traverse").default;
+import resultFiles from "./resultFiles";
 
 export const log = {
   warn: (msg) => {
@@ -30,7 +31,7 @@ export const createLoading = (msg) => {
  * @param dirPath 需要遍历的文件路径
  */
 export async function getAllFilesByDir(options, callback) {
-  const { dirPath, fileExtension, ignoreDirs } = options;
+  const { dirPath, fileExtension, ignoreDirsAndFiles } = options;
   fs.readdirSync(dirPath).forEach((fileName) => {
     const filePath = path.join(dirPath, fileName);
     fs.stat(filePath, function (error, stats) {
@@ -40,17 +41,20 @@ export async function getAllFilesByDir(options, callback) {
       }
       const isFile = stats.isFile();
       const isDir = stats.isDirectory();
-      if (isFile && !ignoreDirs.includes(fileName)) {
+      if (
+        isFile &&
+        !ignoreDirsAndFiles.some((item) => filePath.includes(item))
+      ) {
         if (fileExtension.some((item) => filePath.endsWith(item))) {
           callback(filePath);
         }
       }
-      if (isDir && !ignoreDirs.includes(fileName)) {
+      if (isDir && !ignoreDirsAndFiles.includes(fileName)) {
         getAllFilesByDir(
           {
             dirPath: filePath,
             fileExtension,
-            ignoreDirs,
+            ignoreDirsAndFiles,
           },
           callback
         );
@@ -60,13 +64,19 @@ export async function getAllFilesByDir(options, callback) {
 }
 
 export async function checkCodeHasChinese(code, fileName) {
-  log.normal(`正在检测：${fileName}`);
+  // log.normal(`正在检测：${fileName}`);
   // console.log(code);
   // console.log(code);
-  const ast = codeToAst(code);
-  // console.log(ast);
-  await handleAst(ast);
-  log.suc(`👉️ 文件包含中文：${fileName}`);
+  try {
+    const ast = codeToAst(code);
+    // console.log(ast);
+    await handleAst(ast);
+    log.suc(`👉️ 文件包含中文：${fileName}`);
+    resultFiles.addFile(fileName);
+  } catch (error) {
+    log.normal(`👉️ ${fileName} 文件报错，可能包含无法识别的语法，建议忽略`);
+    console.error(error);
+  }
 }
 
 export function readFile(path) {
@@ -91,6 +101,7 @@ function handleAst(ast) {
     traverse(ast, {
       StringLiteral({ node }) {
         if (node && isChinese(node.value)) {
+          // log.normal(node.value)
           resolve(true);
         }
       },
@@ -101,17 +112,19 @@ function handleAst(ast) {
           node.value.cooked &&
           isChinese(node.value.cooked)
         ) {
-          console.log(node);
+          // console.log(node);
           // const ast = codeToAst(node.value.cooked);
           // // 过滤 jsx 中出现的注释
           // if (ast.comments.length > 0) {
           //   return;
           // }
+          // log.normal(node.value.cooked)
           resolve(true);
         }
       },
       JSXText({ node }) {
         if (node && isChinese(node.value)) {
+          // log.normal(node.value)
           resolve(true);
         }
       },

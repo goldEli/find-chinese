@@ -8,15 +8,21 @@ import {
 const compiler = require("@vue/compiler-sfc");
 
 const findChinese = (options) => {
-  const { ignoreDirs = '' } = options;
+  const { ignoreDirsAndFiles = [] } = options;
   const rootDir = process.cwd();
   console.log(chalk.gray(`脚本运行的路径:${rootDir}`));
+  const defaultIgnoreDirsAndFiles = [
+    "node_modules",
+    "webpack.config.js",
+    ".nuxt",
+    "_nuxt",
+  ];
 
   getAllFilesByDir(
     {
       dirPath: rootDir,
       fileExtension: [".js", ".vue", ".ts", ".tsx", ".jsx"],
-      ignoreDirs: ["node_modules", "webpack.config.js"].concat(ignoreDirs.split('|')),
+      ignoreDirsAndFiles: defaultIgnoreDirsAndFiles.concat(ignoreDirsAndFiles),
     },
     async (filePath) => {
       const code = await readFile(filePath);
