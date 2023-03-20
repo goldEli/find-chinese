@@ -1,13 +1,13 @@
 {
-  "name": "@samuel.miao/checkcn",
-  "version": "1.0.1",
+  "name": "@samuel.miao/findcn",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "checkcn": "bin/findChinese"
+    "findcn": "bin/findChinese"
   },
   "files": [
     "bin",
