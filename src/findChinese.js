@@ -15,7 +15,7 @@ const findChinese = (options) => {
   getAllFilesByDir(
     {
       dirPath: rootDir,
-      fileExtension: ["js", "vue", "ts", "tsx", "jsx"],
+      fileExtension: [".js", ".vue", ".ts", ".tsx", ".jsx"],
       ignoreDirs: ["node_modules"].concat(ignoreDirs.split('|')),
     },
     async (filePath) => {
