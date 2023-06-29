@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import findChinese from "./src/findChinese.js";
 import arg from "arg";
 import chalk from "chalk";
